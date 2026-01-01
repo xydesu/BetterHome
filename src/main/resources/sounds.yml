@@ -1,0 +1,121 @@
+############################
+#      BetterHome GUI      #
+############################
+# 作者: Kevi_28576
+# 版本: 1.7.2
+#
+# 支援與問題回報: https://discord.gg/JyQPpVrhsk
+# 如果你喜歡這個插件，請在 Spigot 頁面留下評價 :D
+
+# 是否開啟伺服器
+enabled: true
+
+# ===== System sounds =====
+system:
+  success:
+    name: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+
+  fail:
+    name: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+
+  error:
+    name: BLOCK_ANVIL_LAND
+    volume: 0.8
+    pitch: 0.9
+# ===== TP Home sounds =====
+tp:
+  countdown:
+    name: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.0
+
+  final-tick:
+    name: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 2.0
+
+  teleport:
+    name: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+
+  complete:
+    name: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+
+  cancel:
+    name: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+
+# ===== UI sounds =====
+ui:
+  open:
+    name: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+
+  click:
+    name: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.2
+
+  navigate:
+    name: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.4
+
+  back:
+    name: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 0.9
+
+  next:
+    name: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.3
+
+  prev:
+    name: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 0.95
+
+  close:
+    name: BLOCK_CHEST_CLOSE
+    volume: 1.0
+    pitch: 1.0
+
+  confirm:
+    name: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.8
+
+  cancel:
+    name: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+
+  pick-icon:
+    name: BLOCK_AMETHYST_BLOCK_STEP
+    volume: 1.0
+    pitch: 1.4
+
+  share-add:
+    name: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.5
+
+  share-remove:
+    name: BLOCK_FIRE_EXTINGUISH
+    volume: 0.8
+    pitch: 1.2
+
+  prompt:
+    name: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.0

@@ -1,0 +1,369 @@
+############################
+#      BetterHome GUI      #
+############################
+# 作者: Kevi_28576
+# 版本: 1.7.2
+#
+# 支援與問題回報: https://discord.gg/JyQPpVrhsk
+# 如果你喜歡這個插件，請在 Spigot 頁面留下評價 :D
+#
+# 注意：更改指令名稱、GUI 標題等選項，請小心避免和其他插件衝突。
+
+# ========================================
+#          基本設定
+# ========================================
+
+# 每位玩家預設可擁有的最大家數量
+default-max-homes: 3
+
+# 傳送過程中是否允許移動 (true = 移動會取消傳送)
+cancel-on-move: true
+
+# 傳送冷卻時間（單位：秒）
+teleport-cooldown: 5
+
+# 禁止設定家的世界
+blacklisted-worlds:
+  - world_nether
+  - world_the_end
+
+# ========================================
+#                日誌設定
+# ========================================
+log:
+  # 是否將除錯訊息輸出到主控台 (server log)
+  console-debug: false
+
+  # 是否將除錯訊息顯示給擁有 betterhome.debug 權限的在線玩家 (game chat)
+  notify-debug-to-players: false
+
+  # 廣播設定：控制插件啟動/關閉時是否廣播訊息給玩家
+  broadcast:
+    startup:
+      enabled: true
+      message: "&a[BetterHome] 插件已啟用，使用 /%command% 打開家園選單。"
+
+    shutdown:
+      enabled: true
+      message: "&c[BetterHome] 插件已關閉，家園功能暫時無法使用。"
+
+# ========================================
+#           選擇家園圖示選單設定
+# ========================================
+
+icon-picker:
+  title: "&9選擇家園圖示"
+  whitelist:
+    - RED_BED
+    - PINK_BED
+    - LIGHT_BLUE_BED
+    - BLUE_BED
+    - BLACK_BED
+    - WHITE_BED
+    - CHERRY_LOG
+    - STRIPPED_CHERRY_LOG
+    - CHERRY_WOOD
+    - STRIPPED_CHERRY_WOOD
+    - CHERRY_PLANKS
+    - CHERRY_STAIRS
+    - CHERRY_SLAB
+    - CHERRY_FENCE
+    - CHERRY_FENCE_GATE
+    - CHERRY_DOOR
+    - CHERRY_TRAPDOOR
+    - CHERRY_PRESSURE_PLATE
+    - CHERRY_BUTTON
+    - CHERRY_SIGN
+    - CHERRY_HANGING_SIGN
+    - CHERRY_LEAVES
+    - CHERRY_SAPLING
+    - OAK_PLANKS
+    - SPRUCE_PLANKS
+    - BIRCH_PLANKS
+    - DARK_OAK_PLANKS
+    - OAK_STAIRS
+    - STONE_BRICKS
+    - BRICKS
+    - GLASS
+    - GLASS_PANE
+    - OAK_DOOR
+    - IRON_DOOR
+    - OAK_SIGN
+    - CRAFTING_TABLE
+    - FURNACE
+    - BLAST_FURNACE
+    - SMOKER
+    - STONECUTTER
+    - ANVIL
+    - ENCHANTING_TABLE
+    - SMITHING_TABLE
+    - CARTOGRAPHY_TABLE
+    - LOOM
+    - BREWING_STAND
+    - CAULDRON
+    - JUKEBOX
+    - NOTE_BLOCK
+    - CAMPFIRE
+    - LODESTONE
+    - BEACON
+    - BELL
+    - LANTERN
+    - TORCH
+    - LECTERN
+    - BOOKSHELF
+    - COMPASS
+    - MAP
+    - CHEST
+    - ENDER_CHEST
+    - BARREL
+    - SHULKER_BOX
+    - FLOWER_POT
+    - POTTED_OAK_SAPLING
+    - POTTED_RED_TULIP
+    - POTTED_CACTUS
+    - PAINTING
+    - CARPET
+    - HAY_BLOCK
+    - CAKE
+    - EMERALD_BLOCK
+    - DIAMOND_BLOCK
+    - GOLD_BLOCK
+    - IRON_BLOCK
+    - REDSTONE_BLOCK
+    - LAPIS_BLOCK
+    - NETHERITE_BLOCK
+    - HONEY_BLOCK
+    - SLIME_BLOCK
+    - BEDROCK
+    - ARMOR_STAND
+    - ITEM_FRAME
+    - DRAGON_HEAD
+    - WITHER_SKELETON_SKULL
+
+# ========================================
+#          主選單設定
+# ========================================
+menu:
+  open-command: /home                    #! 建議不要更改，避免失效
+  gui-title: "&3&lBetterHome 家園系統"
+  border-item: "LIGHT_GRAY_STAINED_GLASS_PANE"
+  center-item: "LIGHT_BLUE_STAINED_GLASS_PANE"
+  info-title: "&e家園系統資訊"
+
+  set-home-item:
+    material: LIGHT_BLUE_BED
+    display-name: "&a&l設置家園"
+    lore:
+      - "&7將目前位置存為一個家園。"
+      - ""
+      - "&e左鍵點擊以設置家園"
+
+  your-homes-item:
+    material: OAK_DOOR
+    display-name: "&e&l你的家園"
+    lore:
+      - "&7查看並管理所有的家園。"
+      - ""
+      - "&e左鍵點擊以開啟"
+
+# ========================================
+#          玩家家園選單
+# ========================================
+homes-menu:
+  size: 27
+  gui-title: "&8你的家園 &7- &f頁面 %page%/%maxpages%"
+  go-back-item: "&c返回"
+  close-item: "&4關閉"
+  next-page-item: "&e下一頁"
+  previous-page-item: "&c上一頁"
+
+  home-item:
+    display-name: "&b家園 &8» &f%home%"
+    lore:
+      - "&a左鍵: 傳送"
+      - "&c右鍵: 刪除"
+
+  no-homes-item:
+    display-name: "&c尚未建立任何家園"
+    lore:
+      - "&7使用 &e/home create <名稱> &7建立第一個家園"
+
+# ========================================
+#          管理員選單
+# ========================================
+admin-menu:
+  size: 27
+  material: BOOK
+  display-name: "&c&l管理選單"
+  lore:
+    - "&7管理與刪除其他玩家的家園。"
+    - ""
+    - "&e左鍵點擊開啟"
+
+  gui-title: "&8管理員選單 - %page%/%maxpages%"
+  admin-gui-title: "&8%player% 的家園 - %page%/%maxpages%"
+
+  go-back-item: "&c返回"
+  close-item: "&4關閉"
+  next-page-item: "&e下一頁"
+  previous-page-item: "&c上一頁"
+
+  home-item:
+    display-name: "&b家園 &8» &f%home%"
+    lore:
+      - "&a左鍵: 傳送"
+      - "&c右鍵: 刪除"
+
+  no-homes-item:
+    display-name: "&c該玩家沒有任何家園"
+
+  player-head-lore:
+    - "&7檢視 %player% 的家園列表"
+    - "&e左鍵點擊以開啟"
+
+# ========================================
+#          確認選單
+# ========================================
+confirmation-menu:
+  gui-title: "&c確認刪除"
+  confirm-item:
+    material: LIME_STAINED_GLASS_PANE
+    display-name: "&a確認"
+  cancel-item:
+    material: RED_STAINED_GLASS_PANE
+    display-name: "&c取消"
+
+confirmation-menu-admin:
+  gui-title: "&c確認刪除玩家的家園"
+  confirm-item:
+    material: LIME_STAINED_GLASS_PANE
+    display-name: "&a確認"
+  cancel-item:
+    material: RED_STAINED_GLASS_PANE
+    display-name: "&c取消"
+
+# ========================================
+#          傳送提示
+# ========================================
+titles:
+  cooldown-title:
+    enable: true
+    teleport-title: "&a正在準備傳送..."
+    teleport-subtitle: "&e%seconds% 秒後完成"
+  static-title:
+    enable: false
+    teleport-title: "&a傳送中..."
+    teleport-subtitle: "&e請稍候"
+  teleport-finish:
+    enable: true
+    title: "&a傳送完成！"
+    subtitle: "&7已到達目的地"
+    fade-in: 10
+    stay: 40
+    fade-out: 10
+
+action-bar:
+  cooldown-title:
+    enable: true
+    teleport-message: "&7即將在 &b%seconds% &7秒後傳送"
+  static-title:
+    enable: false
+    teleport-subtitle: "&7請稍候，正在傳送..."
+  teleport-finish:
+    enable: true
+    message: "&a已成功傳送至家園"
+    duration-ticks: 40
+
+# ========================================
+#          訊息文字
+# ========================================
+messages:
+  home-established: "&7[&bBetterHome&7] &a已成功設置家園: &f%home%"
+  home-established-to-other: "&7[&bBetterHome&7] &a已為玩家 &f%player% &a設置家園。"
+  home-overwritten: "&7[&bBetterHome&7] &a已覆蓋原有家園: &f%home%"
+  home-renamed: "&7[&bBetterHome&7] &a已將家園 &f%old% &a重新命名為 &f%new%"
+  rename-exists: "&7[&bBetterHome&7] &c已有同名家園存在，無法使用該名稱。"
+
+  not-established-home: "&7[&bBetterHome&7] &c你尚未設置任何家園。"
+  home-not-found: "&7[&bBetterHome&7] &c找不到家園: %home%"
+  player-home-not-exist: "&7[&bBetterHome&7] &c玩家 %player% 沒有名為 %home% 的家園。"
+
+  home-removed: "&7[&bBetterHome&7] &a家園 &f%home% &a已刪除。"
+  home-removed-to-other: "&7[&bBetterHome&7] &a已刪除玩家 &f%player% &a的家園 &f%home%。"
+
+  teleported: "&7[&bBetterHome&7] &a已傳送至家園: &f%home%"
+  teleported-other-home: "&7[&bBetterHome&7] &a已傳送到玩家 &f%player% &a的家園 &f%home%"
+  teleporting-to-guild-home: "&7[&bBetterHome&7] &a正在傳送到你的公會家園..."
+  guild-home-not-set: "&7[&bBetterHome&7] &c你的公會尚未設置家園。"
+
+  home-limit-reached: "&7[&bBetterHome&7] &c已達到可設置家園的上限 (%limit% 個)。"
+  error-blacklisted-world: "&7[&bBetterHome&7] &c此世界禁止設置家園。"
+
+  enter-home-name: "&7[&bBetterHome&7] &e請在聊天輸入新的家園名稱，(輸入 cancel 取消)"
+  enter-new-home-name: "&7[&bBetterHome&7] &e請在聊天輸入家園新名稱 (輸入 cancel 取消)"
+  enter-shares-player-name: "&7[&bBetterHome&7] &e請在聊天輸入要共享的玩家名稱，(輸入 cancel 取消)"
+  home-cancelled: "&7[&bBetterHome&7] &c操作已取消。"
+  home-exists: "&7[&bBetterHome&7] &c該名稱已被使用，請使用其他家園名稱。"
+  home-exists-retry: "&7[&bBetterHome&7] &e該名稱已存在，若要覆蓋請在 30 秒內再次輸入相同名稱。"
+  home-mismatch-cancel: "&7[&bBetterHome&7] &c輸入的名稱與上次不同，操作已取消。"
+  home-timeout: "&7[&bBetterHome&7] &c操作逾時，請重新嘗試。"
+  no-pending-home: "&7[&bBetterHome&7] &c你目前沒有待確認刪除的家。"
+
+  favorite-set: "&7[&bBetterHome&7] &d★ 已將 %home% 設為最愛傳送點"
+  favorite-unset: "&7[&bBetterHome&7] &7已取消最愛傳送點：%home%"
+
+  icon-set: "&7[&bBetterHome&7] &a已更新 %home% 的圖示：&f%icon%"
+
+  # ========= 傳送過程 =========
+  teleport-cooldown: "&7[&bBetterHome&7] &7傳送將在 &b%seconds% &7秒後開始"
+  teleport-in-progress: "&7[&bBetterHome&7] &c你已在傳送中，請稍候完成後再進行下一次傳送。"
+  teleport-cancelled: "&7[&bBetterHome&7] &c你移動了，傳送已取消。"
+  world-not-found: "&7[&bBetterHome&7] &c無法找到目標世界。"
+  world-not-exist: "&7[&bBetterHome&7] &c該家園所在的世界不存在。"
+  invalid-location: "&7[&bBetterHome&7] &c家園座標無效，無法傳送。"
+  back-may-not-work: "&7[&bBetterHome&7] &c警告: /back 可能無法回到你上一個位置!"
+
+  # ========= 共享系統 =========
+  share-success: "&7[&bBetterHome&7] &a你已將家園 &f%home% &a分享給玩家 &f%player%"
+  share-received: "&7[&bBetterHome&7] &b玩家 &f%owner% &b與你分享了家園 &f%home%"
+  share-self-error: "&7[&bBetterHome&7] &c你不能與自己共享家園。"
+  share-already: "&7[&bBetterHome&7] &c玩家 &e%player% &c已經擁有 &e%home% &c的存取權了！"
+  share-limit-reached: "&7[&bBetterHome&7] &c家園 &f%home% &c的共享人數已達上限。"
+  share-failed: "&7[&bBetterHome&7] &c共享失敗，請確認家園名稱與玩家是否正確，並請稍後再試。"
+
+  unshare-success: "&7[&bBetterHome&7] &a你已取消將家園 &f%home% &a分享給玩家 &f%player%"
+  unshare-received: "&7[&bBetterHome&7] &c玩家 &f%owner% &c已取消與你共享家園 &f%home%"
+  not-shared-with-player: "&7[&bBetterHome&7] &c你的家園 &f%home% &c並未共享給 &f%player%"
+  unshare-failed: "&7[&bBetterHome&7] &c取消共享失敗，請確認家園名稱與玩家是否正確，並請稍後再試。"
+  admin-home-removed: "&7[&bBetterHome&7] &a已刪除玩家 &f%player% &a的家園 &f%home%。"
+  due-delete-owner: "&7[&bBetterHome&7] &a已刪除家園 &f%home%&a，並移除 &f%count% &a位共享對象。"
+  due-delete-target: "&7[&bBetterHome&7] &c玩家 &f%owner% &c已刪除家園 &f%home%&c，你不再擁有該家園的存取權。"
+
+  list-shares-header: "&7[&bBetterHome&7] &e=== 你已分享的家園 ==="
+  list-shares-empty: "&7[&bBetterHome&7] &7目前沒有任何共享的家園。"
+  list-shares-entry: "&e- &f%home% &7→ %players%"
+
+  shared-go-no-access: "&7[&bBetterHome&7] &c你沒有權限進入玩家 %owner% 的家園 %home%"
+  shared-go-teleported: "&7[&bBetterHome&7] &a你已傳送至玩家 &f%owner% &a的家園 &f%home%"
+
+  owner-not-found: "&7[&bBetterHome&7] &c找不到該擁有者玩家：&f%owner%"
+  shared-home-not-shared: "&7[&bBetterHome&7] &c對方沒有分享此家園給你：&f%owner%&7:&f%home%"
+
+  # ========= 管理與控制台 =========
+  player-only: "&7[&bBetterHome&7] &c此指令僅限玩家使用。"
+  console-only: "&7[&bBetterHome&7] &c此指令僅限控制台使用。"
+  console-or-player: "&7[&bBetterHome&7] &c此指令僅能由控制台或玩家使用。"
+  player-not-found: "&7[&bBetterHome&7] &c找不到玩家: %player%"
+  player-not-online: "&7[&bBetterHome&7] &c玩家 %player% 目前不在線上。"
+  other-homes-permissions: "&7[&bBetterHome&7] &c你沒有權限管理其他玩家的家園。"
+
+  # ========= 匯入/儲存 =========
+  import-no-permission: "&7[&bBetterHome&7] &c你沒有權限匯入家園資料。"
+  save-file-error: "&7[&bBetterHome&7] &c儲存玩家資料時發生錯誤。"
+  saving-error: "&7[&bBetterHome&7] &c儲存變更時發生錯誤。"
+
+  # ========= 插件控制 =========
+  invalid-coordinates: "&7[&bBetterHome&7] &c座標輸入無效！請確認 X, Y, Z 為正確數字。"
+  no-permissions: "&7[&bBetterHome&7] &4你沒有足夠的權限來執行此操作！"
+  no-reload-permissions: "&7[&bBetterHome&7] &c你沒有權限重新載入插件！"
+  plugin-reloaded: "&7[&bBetterHome&7] &a插件已成功重新載入！"

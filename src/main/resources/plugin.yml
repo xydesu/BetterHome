@@ -1,0 +1,61 @@
+name: BetterHome
+version: '${project.version}'
+author: Kevi_28576
+main: kevin.betterhome.BetterHome
+api-version: 1.13
+depend: [LuckPerms, Guilds]
+softdepend: [Essentials, PlaceholderAPI]
+
+commands:
+  home:
+    description: Open home main menu and subcommands
+    usage: /home
+    permission: betterhome.use
+  homes:
+    description: Open homes list
+    usage: /homes
+    permission: betterhome.use
+  homegui:
+    description: Open the home GUI
+    usage: /homegui
+    permission: betterhome.use
+  gohome:
+    description: Teleport to a home directly
+    usage: /gohome <name>
+    permission: betterhome.use
+  sethome:
+    description: Create a home directly
+    usage: /sethome <name>
+    permission: betterhome.use
+  share:
+    description: Share one of your homes with another player
+    usage: /home share <homeName> <player>
+    permission: betterhome.share
+  unshare:
+    description: Remove a shared home from a player
+    usage: /home unshare <homeName> <player>
+    permission: betterhome.share
+  shareslist:
+    description: View a list of your shared homes
+    usage: /home shareslist
+    permission: betterhome.share
+
+permissions:
+  betterhome.use:
+    default: true
+  betterhome.share:
+    default: true
+  betterhome.cooldown.bypass:
+    default: op
+  betterhome.world.bypass.worldname:
+    default: op
+  betterhome.reload:
+    default: op
+  betterhome.admin:
+    default: op
+  betterhome.import.essentials:
+    default: op
+  betterhome.import.huskhomes:
+    default: op
+  betterhome.debug:
+    default: op
