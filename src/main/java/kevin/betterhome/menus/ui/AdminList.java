@@ -2,9 +2,6 @@ package kevin.betterhome.menus.ui;
 
 import kevin.betterhome.BetterHome;
 import kevin.betterhome.menus.holders.AdminMenu;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
@@ -16,16 +13,14 @@ import org.bukkit.plugin.Plugin;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class AdminList {
 
     private static Plugin plugin;
-    private static LuckPerms luckPerms;
 
     // 快取的使用者清單
-    private static List<User> cachedUsers = Collections.emptyList();
+    private static List<OfflinePlayer> cachedUsers = Collections.emptyList();
     private static boolean cacheLoaded = false;
 
     /**
@@ -33,10 +28,6 @@ public class AdminList {
      */
     public static void initialize(Plugin pluginInstance) {
         plugin = pluginInstance;
-        luckPerms = LuckPermsProvider.get();
-        if (luckPerms == null) {
-            plugin.getLogger().severe("[AdminList] 無法取得 LuckPerms API 實例，請確認 LuckPerms 插件已啟用。");
-        }
     }
 
     /**
@@ -47,34 +38,21 @@ public class AdminList {
         if (plugin == null) {
             throw new IllegalArgumentException("plugin 不能為 null");
         }
-        if (luckPerms == null) {
-            plugin.getLogger().severe("[AdminList] LuckPerms API 尚未取得，無法刷新快取");
-            return;
-        }
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 plugin.getLogger().info("[AdminList] 開始刷新玩家快取...");
                 OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
 
-                List<CompletableFuture<User>> futureUsers = new ArrayList<>();
-                for (OfflinePlayer offlinePlayer : offlinePlayers) {
-                    UUID uuid = offlinePlayer.getUniqueId();
-                    CompletableFuture<User> futureUser = luckPerms.getUserManager().loadUser(uuid);
-                    futureUsers.add(futureUser);
-                }
-
-                // 等待所有非同步載入完成
-                CompletableFuture.allOf(futureUsers.toArray(new CompletableFuture[0])).join();
-
-                // 收集所有成功載入的 User
-                List<User> users = futureUsers.stream()
-                        .map(CompletableFuture::join)  // join 後必定有結果（或拋異常）
+                List<OfflinePlayer> users = Arrays.stream(offlinePlayers)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
 
                 // 排序
-                users.sort(Comparator.comparing(User::getUsername, String.CASE_INSENSITIVE_ORDER));
+                users.sort(Comparator.comparing(
+                        user -> user.getName() == null ? "" : user.getName(),
+                        String.CASE_INSENSITIVE_ORDER
+                ));
 
                 cachedUsers = Collections.unmodifiableList(users);
                 cacheLoaded = true;
@@ -94,7 +72,7 @@ public class AdminList {
     /**
      * 取得快取的使用者清單
      */
-    public static List<User> getCachedUsers() {
+    public static List<OfflinePlayer> getCachedUsers() {
         return cachedUsers;
     }
 
@@ -109,10 +87,14 @@ public class AdminList {
      * 開啟管理員清單 GUI
      */
     public static void open(Player player, int page) {
+        if (plugin == null) {
+            plugin = BetterHome.getPlugin(BetterHome.class);
+        }
+
         if (!cacheLoaded) {
             Inventory loading = Bukkit.createInventory(null, 54, ChatColor.DARK_GRAY + "Loading...");
             player.openInventory(loading);
-            // 快取尚未載入時，可由外部控制快取觸發
+            refreshCacheAsync(plugin, () -> open(player, page));
             return;
         }
 
@@ -131,16 +113,16 @@ public class AdminList {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
         for (int i = start; i < end; i++) {
-            User user = cachedUsers.get(i);
-            UUID uuid = user.getUniqueId();
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+            OfflinePlayer offlinePlayer = cachedUsers.get(i);
+            UUID uuid = offlinePlayer.getUniqueId();
+            String playerName = offlinePlayer.getName() == null ? uuid.toString() : offlinePlayer.getName();
 
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
             if (meta != null) {
                 meta.setOwningPlayer(offlinePlayer);
-                meta.setDisplayName(ChatColor.YELLOW + user.getUsername());
+                meta.setDisplayName(ChatColor.YELLOW + playerName);
 
                 boolean online = offlinePlayer.isOnline();
                 ChatColor statusColor = online ? ChatColor.GREEN : ChatColor.RED;
@@ -157,7 +139,7 @@ public class AdminList {
                     lore.add(ChatColor.GRAY + "最後上線: " + ChatColor.WHITE + lastSeen);
                 } else {
                     lore.replaceAll(line -> ChatColor.translateAlternateColorCodes('&',
-                            line.replace("%player%", user.getUsername())
+                            line.replace("%player%", playerName)
                                     .replace("%status%", statusColor + statusText)
                                     .replace("%lastlogin%", lastSeen)));
                 }

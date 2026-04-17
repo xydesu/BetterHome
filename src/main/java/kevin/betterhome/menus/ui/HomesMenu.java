@@ -4,7 +4,6 @@ import kevin.betterhome.BetterHome;
 import kevin.betterhome.integration.guilds.GuildsManager;
 import kevin.betterhome.menus.holders.PlayerMenu;
 import kevin.betterhome.utils.HomeUtils;
-import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -92,17 +91,17 @@ public class HomesMenu {
 
         // Guilds 欄位（沿用原本槽位）
         try {
-            Guild guild = GuildsManager.getGuild(player);
+            String guildName = GuildsManager.getGuildName(player);
+            org.bukkit.Location guildHome = GuildsManager.getGuildHomeLocation(player);
 
-            if (guild != null) {
-                String guildName = guild.getName();
+            if (guildName != null) {
 
                 // 旗幟
                 guildFlag = new ItemStack(Material.BLUE_BANNER);
                 ItemMeta flagMeta = guildFlag.getItemMeta();
                 if (flagMeta != null) {
                     flagMeta.setDisplayName(ChatColor.AQUA + "所屬工會：§f" + guildName);
-                    if (guild.getHome() != null) {
+                    if (guildHome != null) {
                         flagMeta.setLore(Collections.singletonList(ChatColor.YELLOW + "點擊顏料可傳送到工會家園"));
                     } else {
                         flagMeta.setLore(Collections.singletonList(ChatColor.RED + "此工會尚未設定家園"));
@@ -111,7 +110,7 @@ public class HomesMenu {
                 }
 
                 // 顏料
-                if (guild.getHome() != null) {
+                if (guildHome != null) {
                     guildDye = new ItemStack(Material.BLUE_DYE);
                     ItemMeta dyeMeta = guildDye.getItemMeta();
                     if (dyeMeta != null) {
