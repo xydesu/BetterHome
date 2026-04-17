@@ -1,6 +1,5 @@
 package kevin.betterhome.menus.ui;
 
-import kevin.betterhome.BetterHome;
 import kevin.betterhome.menus.holders.AdminMenu;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -88,7 +87,7 @@ public class AdminList {
      */
     public static void open(Player player, int page) {
         if (plugin == null) {
-            plugin = BetterHome.getPlugin(BetterHome.class);
+            return;
         }
 
         if (!cacheLoaded) {
@@ -115,7 +114,7 @@ public class AdminList {
         for (int i = start; i < end; i++) {
             OfflinePlayer offlinePlayer = cachedUsers.get(i);
             UUID uuid = offlinePlayer.getUniqueId();
-            String playerName = offlinePlayer.getName() == null ? "Unknown" : offlinePlayer.getName();
+            String playerName = getDisplayName(offlinePlayer);
 
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -211,5 +210,10 @@ public class AdminList {
     private static String getSortName(OfflinePlayer player) {
         String name = player.getName();
         return name == null ? "" : name;
+    }
+
+    private static String getDisplayName(OfflinePlayer player) {
+        String name = player.getName();
+        return name == null ? "Unknown" : name;
     }
 }
