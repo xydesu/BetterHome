@@ -50,7 +50,7 @@ public class AdminList {
 
                 // 排序
                 users.sort(Comparator.comparing(
-                        user -> user.getName() == null ? "" : user.getName(),
+                        AdminList::getSortName,
                         String.CASE_INSENSITIVE_ORDER
                 ));
 
@@ -206,5 +206,10 @@ public class AdminList {
         }
         item.setItemMeta(meta);
         menu.setItem(slot, item);
+    }
+
+    private static String getSortName(OfflinePlayer player) {
+        String name = player.getName();
+        return name == null ? "" : name;
     }
 }

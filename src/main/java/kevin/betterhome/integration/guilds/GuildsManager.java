@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 
 public class GuildsManager {
 
-    private static volatile Object guildsApi;
+    private static Object guildsApi;
 
     private GuildsManager() {}
 
@@ -25,9 +25,9 @@ public class GuildsManager {
             Class<?> guildsClass = Class.forName("me.glaremasters.guilds.Guilds");
             Method getApiMethod = guildsClass.getMethod("getApi");
             guildsApi = getApiMethod.invoke(null);
-        } catch (Exception t) {
+        } catch (Exception e) {
             guildsApi = null;
-            plugin.getLogger().warning("Guilds detected but API initialization failed: " + t.getMessage());
+            plugin.getLogger().warning("Guilds detected but API initialization failed: " + e.getMessage());
         }
     }
 
