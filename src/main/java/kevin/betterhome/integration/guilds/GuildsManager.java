@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 public class GuildsManager {
 
     private static volatile Object guildsApi;
-    private static volatile boolean available;
 
     private GuildsManager() {}
 
@@ -19,7 +18,6 @@ public class GuildsManager {
         Plugin guildsPlugin = pluginManager.getPlugin("Guilds");
         if (guildsPlugin == null || !guildsPlugin.isEnabled()) {
             guildsApi = null;
-            available = false;
             return;
         }
 
@@ -27,16 +25,14 @@ public class GuildsManager {
             Class<?> guildsClass = Class.forName("me.glaremasters.guilds.Guilds");
             Method getApiMethod = guildsClass.getMethod("getApi");
             guildsApi = getApiMethod.invoke(null);
-            available = guildsApi != null;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             guildsApi = null;
-            available = false;
             plugin.getLogger().warning("Guilds detected but API initialization failed: " + t.getMessage());
         }
     }
 
     public static boolean isAvailable() {
-        return available;
+        return guildsApi != null;
     }
 
     public static String getGuildName(Player player) {
@@ -46,7 +42,7 @@ public class GuildsManager {
             Method getNameMethod = guild.getClass().getMethod("getName");
             Object result = getNameMethod.invoke(guild);
             return result == null ? null : result.toString();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }
@@ -61,7 +57,7 @@ public class GuildsManager {
             Method getAsLocationMethod = guildHome.getClass().getMethod("getAsLocation");
             Object location = getAsLocationMethod.invoke(guildHome);
             return location instanceof Location ? (Location) location : null;
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }
@@ -71,14 +67,14 @@ public class GuildsManager {
     }
 
     private static Object getGuildObject(Player player) {
-        if (!available || guildsApi == null || player == null) return null;
+        if (guildsApi == null || player == null) return null;
         try {
             Method getGuildHandlerMethod = guildsApi.getClass().getMethod("getGuildHandler");
             Object handler = getGuildHandlerMethod.invoke(guildsApi);
             if (handler == null) return null;
             Method getGuildByPlayerIdMethod = handler.getClass().getMethod("getGuildByPlayerId", java.util.UUID.class);
             return getGuildByPlayerIdMethod.invoke(handler, player.getUniqueId());
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }

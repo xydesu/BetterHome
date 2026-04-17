@@ -115,7 +115,7 @@ public class AdminList {
         for (int i = start; i < end; i++) {
             OfflinePlayer offlinePlayer = cachedUsers.get(i);
             UUID uuid = offlinePlayer.getUniqueId();
-            String playerName = offlinePlayer.getName() == null ? uuid.toString() : offlinePlayer.getName();
+            String playerName = offlinePlayer.getName() == null ? "Unknown" : offlinePlayer.getName();
 
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();

@@ -68,7 +68,7 @@ public class HomeUtils {
                         max = value;
                     }
                 } catch (NumberFormatException ignored) {
-                    plugin.logDebug("Ignored invalid max-homes permission: " + permission);
+                    plugin.logDebug("Ignored invalid max-homes permission: " + permission + ", error: " + ignored.getMessage());
                 }
             }
             return max;
