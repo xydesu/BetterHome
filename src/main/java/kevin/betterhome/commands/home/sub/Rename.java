@@ -15,7 +15,7 @@ public class Rename implements ICommand {
 
     @Override public String name() { return "rename"; }
     @Override public String permission() { return "betterhome.use"; }
-    @Override public String usage() { return "/home rename <OldName> <NewName>"; }
+    @Override public String usage() { return "&f/home rename &7<&eOldName&7> &7<&eNewName&7>"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override
@@ -25,7 +25,7 @@ public class Rename implements ICommand {
 
         if (args.length != 2) {
             SoundUtils.playFail(plugin, (Player) sender);
-            player.sendMessage(color(usage()));
+            player.sendMessage(color(usageMessage()));
             return true;
         }
 

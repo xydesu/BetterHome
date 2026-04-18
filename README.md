@@ -1,113 +1,168 @@
 # BetterHome
 
-Minecraft 家園系統外掛，提供 GUI 管理、指令操作、分享與管理功能。
+A feature-rich Minecraft home management plugin for Spigot/Paper servers. Manage homes through an intuitive GUI or commands, share homes with other players, and let admins oversee everything — all with no required dependencies.
 
-## 功能
+![Build](https://github.com/xydesu/BetterHome/actions/workflows/build.yml/badge.svg)
 
-- GUI 管理家與列表、設定最愛
-- 直接設置與傳送到指定家
-- 支援分享家給其他玩家並管理分享
-- 管理員可代玩家建立/刪除家
-- 匯入 Essentials 或 HuskHomes 的家資料
+---
 
-## 指令
+## Features
 
-| 指令 | 說明 | 權限 |
-| --- | --- | --- |
-| `/home` | 開啟主選單與子指令 | `betterhome.use` |
-| `/homes` | 開啟家列表 | `betterhome.use` |
-| `/homegui` | 開啟 GUI | `betterhome.use` |
-| `/gohome <name>` | 直接傳送到家 | `betterhome.use` |
-| `/sethome <name>` | 直接設置家 | `betterhome.use` |
-| `/home create <HomeName>` | 建立家 | `betterhome.use` |
-| `/home tp <HomeName|OwnerName:HomeName>` | 傳送到家/共享家 | `betterhome.use` |
-| `/home rename <OldName> <NewName>` | 重新命名家 | `betterhome.use` |
-| `/home delete <HomeName>` | 刪除家 | `betterhome.use` |
-| `/home reload` | 重載設定 | `betterhome.reload` |
-| `/home import <Essentials|HuskHomes>` | 匯入舊資料 | `betterhome.import.*` |
-| `/home share <HomeName> <Player>` | 分享家 | `betterhome.share` |
-| `/home unshare <HomeName> <Player>` | 取消分享 | `betterhome.share` |
-| `/home shareslist` | 查看分享清單 | `betterhome.share` |
-| `/home admin create <Player> <HomeName> [x y z]` | 管理員建立家 | `betterhome.admin` |
-| `/home admin delete <Player> <HomeName>` | 管理員刪除家 | `betterhome.admin` |
+- **GUI management** — browse, teleport, rename, delete, and favourite homes from a clean inventory UI
+- **Direct commands** — set and teleport to homes without opening a menu
+- **Home sharing** — share individual homes with specific players and manage your share list
+- **Admin tools** — create or delete homes on behalf of any player via GUI or command
+- **Data import** — migrate existing home data from Essentials or HuskHomes
+- **Per-player home limits** — grant different limits to different groups via permission nodes (`betterhome.maxhomes.<n>`); works with any permission plugin
+- **Cooldown system** — configurable teleport cooldown with movement cancellation
+- **World restrictions** — blacklist worlds where homes cannot be set
+- **PlaceholderAPI support** — expose home data to scoreboards, chat, etc.
+- **Optional Guilds integration** — shows guild-home UI slots when the Guilds plugin is present; silently disabled when it isn't
+- **bStats analytics** — anonymous usage statistics (Service ID: 26627)
 
-## 權限
+---
 
-- `betterhome.use`: 基本功能 (預設 true)
-- `betterhome.share`: 分享功能 (預設 true)
-- `betterhome.cooldown.bypass`: 無視冷卻 (預設 op)
-- `betterhome.world.bypass.worldname`: 無視世界限制 (預設 op)
-- `betterhome.reload`: 重載設定 (預設 op)
-- `betterhome.admin`: 管理權限 (預設 op)
-- `betterhome.import.essentials`: 匯入 Essentials (預設 op)
-- `betterhome.import.huskhomes`: 匯入 HuskHomes (預設 op)
-- `betterhome.debug`: 除錯 (預設 op)
+## Requirements
 
-## PlaceholderAPI 參數
+| Requirement | Version |
+|---|---|
+| Java | 16+ |
+| Spigot / Paper | 1.13+ |
 
-識別字：`betterhome`
+No plugins are required. All integrations below are optional.
 
-- `%betterhome_count%` 家數量
-- `%betterhome_max%` 可用最大家數
-- `%betterhome_free%` 剩餘可設家數
-- `%betterhome_favorite%` 最愛家名稱
-- `%betterhome_cooldown%` 冷卻秒數
-- `%betterhome_cooldown_formatted%` 冷卻時間 (mm:ss)
-- `%betterhome_command%` 開啟選單指令
-- `%betterhome_exists_<name>%` 指定家是否存在 (true/false)
-- `%betterhome_world_<name>%` 家世界
-- `%betterhome_x_<name>%` / `%betterhome_y_<name>%` / `%betterhome_z_<name>%` 座標
-- `%betterhome_yaw_<name>%` / `%betterhome_pitch_<name>%` 朝向
-- `%betterhome_icon_<name>%` 圖示材質
-- `%betterhome_loc_<name>%` 位置字串 (world x y z)
+---
 
-## 設定與資料
+## Optional Integrations
 
-- 設定檔：`plugins/BetterHome/config.yml`
-- 英文設定範本：`plugins/BetterHome/config_en.yml`
-- 音效設定：`plugins/BetterHome/sounds.yml`
-- 玩家資料：`plugins/BetterHome/data/<uuid>.yml`
+| Plugin | Purpose |
+|---|---|
+| [EssentialsX](https://essentialsx.net/) | Powers `/back` after teleportation |
+| [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) | Exposes `%betterhome_*%` placeholders |
+| [Guilds](https://www.spigotmc.org/resources/guilds.48920/) | Adds a guild-home button in the homes GUI |
 
-常見設定項目包含：
-- `default-max-homes` 預設可設家數
-- `teleport-cooldown` 傳送冷卻秒數
-- `cancel-on-move` 移動是否取消傳送
-- `blacklisted-worlds` 禁止設家的世界
-- `log.*` 啟動/關閉廣播與除錯
-- `sounds.yml` UI 與傳送音效
+---
 
-## 依賴
+## Installation
 
-- 相容 Spigot / Paper (API 1.13+)
-- 必要依賴: LuckPerms, Guilds
-- 選用依賴: Essentials, PlaceholderAPI
+1. Drop `BetterHome-<version>.jar` into your server's `plugins/` folder.
+2. Start (or restart) the server — config files are generated automatically.
+3. Edit `plugins/BetterHome/config.yml` to suit your server.
+4. Install any optional integrations you want, then restart.
 
-## 整合
+---
 
-- Essentials: 連動 `/back` 回傳功能
-- PlaceholderAPI: 提供 BetterHome 變數
-- bStats: 啟用匿名統計 (Service ID: 26627)
+## Commands
 
-## 安裝
+| Command | Description | Permission |
+|---|---|---|
+| `/home` | Open the main menu / run sub-commands | `betterhome.use` |
+| `/homes` | Open the homes list GUI | `betterhome.use` |
+| `/homegui` | Open the homes GUI directly | `betterhome.use` |
+| `/gohome <name>` | Teleport to a home | `betterhome.use` |
+| `/sethome <name>` | Set a home at your current location | `betterhome.use` |
+| `/home create <name>` | Create a home | `betterhome.use` |
+| `/home tp <name\|owner:name>` | Teleport to your home or a shared home | `betterhome.use` |
+| `/home rename <old> <new>` | Rename a home | `betterhome.use` |
+| `/home delete <name>` | Delete a home | `betterhome.use` |
+| `/home share <name> <player>` | Share a home with a player | `betterhome.share` |
+| `/home unshare <name> <player>` | Remove a player's access to a shared home | `betterhome.share` |
+| `/home sharelist` | View your shared homes | `betterhome.share` |
+| `/home import <Essentials\|HuskHomes>` | Import homes from another plugin | `betterhome.import.*` |
+| `/home admin create <player> <name> [x y z]` | Create a home for another player | `betterhome.admin` |
+| `/home admin delete <player> <name>` | Delete a home owned by another player | `betterhome.admin` |
+| `/home reload` | Reload the configuration | `betterhome.reload` |
 
-1. 將外掛 jar 放入 `plugins/`
-2. 視需求安裝依賴外掛
-3. 啟動伺服器產生設定檔並調整
+---
 
-## 開發
+## Permissions
 
-- Java 16
-- Maven 建置: `mvn -DskipTests package`
-- 產物輸出: `target/BetterHome-<version>.jar`
+| Permission | Default | Description |
+|---|---|---|
+| `betterhome.use` | `true` | Access all basic home commands |
+| `betterhome.maxhomes.<n>` | — | Allow up to `n` homes (highest granted value wins) |
+| `betterhome.share` | `true` | Share homes with other players |
+| `betterhome.cooldown.bypass` | `op` | Skip the teleport cooldown |
+| `betterhome.world.bypass.<world>` | `op` | Set homes in blacklisted worlds |
+| `betterhome.reload` | `op` | Reload the plugin configuration |
+| `betterhome.admin` | `op` | Manage homes for other players |
+| `betterhome.import.essentials` | `op` | Import data from Essentials |
+| `betterhome.import.huskhomes` | `op` | Import data from HuskHomes |
+| `betterhome.debug` | `op` | Enable debug logging |
 
-## 使用條款
+### Setting per-group home limits
 
-本專案為「完全保留權利」(All Rights Reserved)。
+Assign `betterhome.maxhomes.<n>` to a group in your permission plugin. The plugin reads all effective permissions and uses the highest value. No LuckPerms API is required — any permission plugin works.
 
-未經事先書面許可，不得：
-- 轉載、再發布、分發或提供下載
-- 修改、反編譯、反向工程、改作、衍生或二次創作
-- 用於任何商業目的或收費服務
+```
+# Example (LuckPerms command)
+/lp group vip permission set betterhome.maxhomes.10 true
+/lp group mvp permission set betterhome.maxhomes.25 true
+```
 
-允許：僅供在自有或已獲授權的 Minecraft 伺服器上運行本外掛。  
-詳情請見 `LICENSE`。
+The fallback when no `maxhomes` permission is granted is controlled by `default-max-homes` in `config.yml`.
+
+---
+
+## PlaceholderAPI Placeholders
+
+Identifier: `betterhome`
+
+| Placeholder | Description |
+|---|---|
+| `%betterhome_count%` | Number of homes the player has set |
+| `%betterhome_max%` | Maximum homes the player is allowed |
+| `%betterhome_free%` | Remaining home slots |
+| `%betterhome_favorite%` | Name of the player's favourite home |
+| `%betterhome_cooldown%` | Remaining cooldown in seconds |
+| `%betterhome_cooldown_formatted%` | Remaining cooldown formatted as `mm:ss` |
+| `%betterhome_command%` | Command to open the homes menu |
+| `%betterhome_exists_<name>%` | Whether a home named `<name>` exists (`true`/`false`) |
+| `%betterhome_world_<name>%` | World of home `<name>` |
+| `%betterhome_x_<name>%` | X coordinate of home `<name>` |
+| `%betterhome_y_<name>%` | Y coordinate of home `<name>` |
+| `%betterhome_z_<name>%` | Z coordinate of home `<name>` |
+| `%betterhome_yaw_<name>%` | Yaw of home `<name>` |
+| `%betterhome_pitch_<name>%` | Pitch of home `<name>` |
+| `%betterhome_icon_<name>%` | Icon material of home `<name>` |
+| `%betterhome_loc_<name>%` | Location string of home `<name>` (`world x y z`) |
+
+---
+
+## Configuration
+
+| File | Purpose |
+|---|---|
+| `plugins/BetterHome/config.yml` | Main configuration (Chinese locale) |
+| `plugins/BetterHome/config_en.yml` | Reference configuration (English) |
+| `plugins/BetterHome/sounds.yml` | UI and teleport sound settings |
+| `plugins/BetterHome/data/<uuid>.yml` | Per-player home data |
+
+Key settings in `config.yml`:
+
+| Key | Description |
+|---|---|
+| `default-max-homes` | Fallback home limit when no permission node is set |
+| `teleport-cooldown` | Cooldown in seconds between teleports |
+| `cancel-on-move` | Cancel a pending teleport if the player moves |
+| `blacklisted-worlds` | List of world names where homes cannot be set |
+| `log.*` | Toggle various startup/broadcast/debug log entries |
+
+---
+
+## Building from Source
+
+```bash
+git clone https://github.com/xydesu/BetterHome.git
+cd BetterHome
+mvn -B -DskipTests package
+# Output: target/BetterHome-<version>.jar
+```
+
+Requires **Java 16** and **Maven 3.6+**. A pre-built JAR is uploaded as a CI artifact on every push.
+
+---
+
+## License
+
+All Rights Reserved. You may run this plugin on your own Minecraft server, but you may not redistribute, modify, decompile, or use it commercially without prior written permission. See [`LICENSE`](LICENSE) for the full terms.

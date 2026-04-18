@@ -1,9 +1,10 @@
 package kevin.betterhome;
 
 import kevin.betterhome.commands.CommandRegistrar;
-import kevin.betterhome.integration.guilds.IntegrationInstanceGuilds;
 import kevin.betterhome.menus.MenuManager;
 import kevin.betterhome.integration.Metrics;
+import kevin.betterhome.integration.guilds.GuildsManager;
+import kevin.betterhome.menus.ui.AdminList;
 import kevin.betterhome.tabcompleters.HomeTabCompleter;
 import kevin.betterhome.utils.HomeUtils;
 import org.bukkit.Bukkit;
@@ -57,13 +58,6 @@ public final class BetterHome extends JavaPlugin {
         getLogger().info("Server: " + getServer().getName() + " " + getServer().getVersion());
         getLogger().info("======================================");
 
-        // 硬性依賴檢查
-        if (!checkDependencies()) {
-            getLogger().severe("Missing required dependencies. Disabling BetterHome.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
         // Essentials 整合 (非必需)
         Plugin essPlugin = getServer().getPluginManager().getPlugin("Essentials");
         if (essPlugin instanceof Essentials) {
@@ -74,16 +68,12 @@ public final class BetterHome extends JavaPlugin {
             getLogger().warning("Essentials not found; /back integration disabled.");
         }
 
-        // Guilds 整合
-        try {
-            logDebug("Initializing Guilds integration...");
-            IntegrationInstanceGuilds.initialize(this);
+        // Guilds 整合（非必需）
+        GuildsManager.initialize(this);
+        if (GuildsManager.isAvailable()) {
             getLogger().info("Guilds integration initialized successfully (Guilds v" + getOtherPluginVersion("Guilds") + ").");
-        } catch (Throwable t) {
-            getLogger().severe("Error while initializing Guilds integration. Disabling BetterHome.");
-            t.printStackTrace();
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+        } else {
+            getLogger().info("Guilds not detected or not compatible; guild-home integration disabled.");
         }
 
         // PlaceholderAPI 整合
@@ -101,6 +91,7 @@ public final class BetterHome extends JavaPlugin {
         // 註冊指令與補全
         CommandRegistrar.registerAll(this, new HomeTabCompleter(this));
         getLogger().info("Commands and tab-completer registered.");
+        AdminList.initialize(this);
 
         // 註冊 GUI 事件
         getServer().getPluginManager().registerEvents(new MenuManager(this), this);
@@ -130,26 +121,6 @@ public final class BetterHome extends JavaPlugin {
         broadcastIfConfigured("shutdown", null);
 
         getLogger().info("BetterHome has been disabled.");
-    }
-
-    // 確認依賴插件
-    private boolean checkDependencies() {
-        Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
-        if (luckPerms == null || !luckPerms.isEnabled()) {
-            getLogger().severe("LuckPerms is required but not found or not enabled.");
-            return false;
-        } else {
-            getLogger().info("Detected LuckPerms v" + getPluginVersionSafe(luckPerms) + ".");
-        }
-
-        Plugin guilds = getServer().getPluginManager().getPlugin("Guilds");
-        if (guilds == null || !guilds.isEnabled()) {
-            getLogger().severe("Guilds is required but not installed or failed to enable.");
-            return false;
-        } else {
-            getLogger().info("Detected Guilds v" + getPluginVersionSafe(guilds) + ".");
-        }
-        return true;
     }
 
     // 重新註冊配置檔

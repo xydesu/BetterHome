@@ -14,7 +14,7 @@ public class Reload implements ICommand {
 
     @Override public String name() { return "reload"; }
     @Override public String permission() { return "betterhome.reload"; }
-    @Override public String usage() { return "/home reload"; }
+    @Override public String usage() { return "&f/home reload"; }
     @Override public boolean playerOnly() { return false; }
 
     @Override

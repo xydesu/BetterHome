@@ -4,7 +4,6 @@ import kevin.betterhome.BetterHome;
 import kevin.betterhome.integration.guilds.GuildsManager;
 import kevin.betterhome.menus.holders.PlayerMenu;
 import kevin.betterhome.utils.HomeUtils;
-import me.glaremasters.guilds.guild.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -45,13 +44,18 @@ public class HomesMenu {
             orderedHomes.add(0, favorite);
         }
 
-        // Guilds Home 狀態旗幟 & 顏料
-        ItemStack guildFlag;
-        ItemStack guildDye;
-
         int maxHomes = HomeUtils.getMaxHomesForPlayer((BetterHome) plugin, player);
 
-        int itemsPerPage = 5;
+        // When Guilds is not active we reclaim slots 10/11 and 19/20 for extra home slots
+        boolean guildsActive = GuildsManager.isAvailable();
+        int itemsPerPage = guildsActive ? 5 : 7;
+        int[] bedSlots = guildsActive
+                ? new int[]{12, 13, 14, 15, 16}
+                : new int[]{10, 11, 12, 13, 14, 15, 16};
+        int[] dyeSlots = guildsActive
+                ? new int[]{21, 22, 23, 24, 25}
+                : new int[]{19, 20, 21, 22, 23, 24, 25};
+
         int totalPages = (int) Math.ceil((double) maxHomes / itemsPerPage);
         if (totalPages == 0) totalPages = 1;
         if (page >= totalPages) page = totalPages - 1;
@@ -90,93 +94,93 @@ public class HomesMenu {
         }
         homesMenu.setItem(4, sharedButton);
 
-        // Guilds 欄位（沿用原本槽位）
-        try {
-            Guild guild = GuildsManager.getGuild(player);
+        // Guilds 欄位（僅在 Guilds 插件已啟用時顯示）
+        if (guildsActive) {
+            ItemStack guildFlag;
+            ItemStack guildDye;
+            try {
+                String guildName = GuildsManager.getGuildName(player);
+                org.bukkit.Location guildHome = GuildsManager.getGuildHomeLocation(player);
 
-            if (guild != null) {
-                String guildName = guild.getName();
+                if (guildName != null) {
 
-                // 旗幟
-                guildFlag = new ItemStack(Material.BLUE_BANNER);
-                ItemMeta flagMeta = guildFlag.getItemMeta();
-                if (flagMeta != null) {
-                    flagMeta.setDisplayName(ChatColor.AQUA + "所屬工會：§f" + guildName);
-                    if (guild.getHome() != null) {
-                        flagMeta.setLore(Collections.singletonList(ChatColor.YELLOW + "點擊顏料可傳送到工會家園"));
+                    // 旗幟
+                    guildFlag = new ItemStack(Material.BLUE_BANNER);
+                    ItemMeta flagMeta = guildFlag.getItemMeta();
+                    if (flagMeta != null) {
+                        flagMeta.setDisplayName(ChatColor.AQUA + "所屬工會：§f" + guildName);
+                        if (guildHome != null) {
+                            flagMeta.setLore(Collections.singletonList(ChatColor.YELLOW + "點擊顏料可傳送到工會家園"));
+                        } else {
+                            flagMeta.setLore(Collections.singletonList(ChatColor.RED + "此工會尚未設定家園"));
+                        }
+                        guildFlag.setItemMeta(flagMeta);
+                    }
+
+                    // 顏料
+                    if (guildHome != null) {
+                        guildDye = new ItemStack(Material.BLUE_DYE);
+                        ItemMeta dyeMeta = guildDye.getItemMeta();
+                        if (dyeMeta != null) {
+                            dyeMeta.setDisplayName(ChatColor.AQUA + "點擊可傳送到工會家園");
+                            dyeMeta.setLore(Collections.singletonList(ChatColor.YELLOW + "點擊即可傳送至工會設定的家園位置"));
+                            dyeMeta.getPersistentDataContainer().set(
+                                    new NamespacedKey(plugin, "guildHome"),
+                                    PersistentDataType.STRING, "teleport"
+                            );
+                            guildDye.setItemMeta(dyeMeta);
+                        }
                     } else {
-                        flagMeta.setLore(Collections.singletonList(ChatColor.RED + "此工會尚未設定家園"));
+                        guildDye = new ItemStack(Material.GRAY_DYE);
+                        ItemMeta dyeMeta = guildDye.getItemMeta();
+                        if (dyeMeta != null) {
+                            dyeMeta.setDisplayName(ChatColor.RED + "尚未設定工會家園");
+                            dyeMeta.setLore(Collections.singletonList(
+                                    ChatColor.GRAY + "請由會長使用 " + ChatColor.LIGHT_PURPLE + "/guild sethome" + ChatColor.GRAY + " 來設定家園"
+                            ));
+                            guildDye.setItemMeta(dyeMeta);
+                        }
                     }
-                    guildFlag.setItemMeta(flagMeta);
-                }
 
-                // 顏料
-                if (guild.getHome() != null) {
-                    guildDye = new ItemStack(Material.BLUE_DYE);
-                    ItemMeta dyeMeta = guildDye.getItemMeta();
-                    if (dyeMeta != null) {
-                        dyeMeta.setDisplayName(ChatColor.AQUA + "點擊可傳送到工會家園");
-                        dyeMeta.setLore(Collections.singletonList(ChatColor.YELLOW + "點擊即可傳送至工會設定的家園位置"));
-                        dyeMeta.getPersistentDataContainer().set(
-                                new NamespacedKey(plugin, "guildHome"),
-                                PersistentDataType.STRING, "teleport"
-                        );
-                        guildDye.setItemMeta(dyeMeta);
-                    }
                 } else {
-                    guildDye = new ItemStack(Material.GRAY_DYE);
+                    // 沒有工會
+                    guildFlag = new ItemStack(Material.RED_BANNER);
+                    ItemMeta flagMeta = guildFlag.getItemMeta();
+                    if (flagMeta != null) {
+                        flagMeta.setDisplayName(ChatColor.RED + "你沒有任何工會");
+                        flagMeta.setLore(Collections.singletonList(ChatColor.GRAY + "加入工會即可使用工會家園功能"));
+                        guildFlag.setItemMeta(flagMeta);
+                    }
+
+                    guildDye = new ItemStack(Material.RED_DYE);
                     ItemMeta dyeMeta = guildDye.getItemMeta();
                     if (dyeMeta != null) {
-                        dyeMeta.setDisplayName(ChatColor.RED + "尚未設定工會家園");
-                        dyeMeta.setLore(Collections.singletonList(
-                                ChatColor.GRAY + "請由會長使用 " + ChatColor.LIGHT_PURPLE + "/guild sethome" + ChatColor.GRAY + " 來設定家園"
-                        ));
+                        dyeMeta.setDisplayName(ChatColor.RED + "請加入工會以啟用此功能");
                         guildDye.setItemMeta(dyeMeta);
                     }
                 }
 
-            } else {
-                // 沒有工會
-                guildFlag = new ItemStack(Material.RED_BANNER);
-                ItemMeta flagMeta = guildFlag.getItemMeta();
-                if (flagMeta != null) {
-                    flagMeta.setDisplayName(ChatColor.RED + "你沒有任何工會");
-                    flagMeta.setLore(Collections.singletonList(ChatColor.GRAY + "加入工會即可使用工會家園功能"));
-                    guildFlag.setItemMeta(flagMeta);
+            } catch (Exception e) {
+                plugin.getLogger().severe("無法載入 Guilds 功能：" + e.getMessage());
+
+                guildFlag = new ItemStack(Material.BARRIER);
+                ItemMeta guildFlagMeta = guildFlag.getItemMeta();
+                if (guildFlagMeta != null) {
+                    guildFlagMeta.setDisplayName(ChatColor.DARK_RED + "Guilds 插件未正確啟用");
+                    guildFlag.setItemMeta(guildFlagMeta);
                 }
 
-                guildDye = new ItemStack(Material.RED_DYE);
-                ItemMeta dyeMeta = guildDye.getItemMeta();
-                if (dyeMeta != null) {
-                    dyeMeta.setDisplayName(ChatColor.RED + "請加入工會以啟用此功能");
-                    guildDye.setItemMeta(dyeMeta);
+                guildDye = new ItemStack(Material.BARRIER);
+                ItemMeta guildDyeMeta = guildDye.getItemMeta();
+                if (guildDyeMeta != null) {
+                    guildDyeMeta.setDisplayName(ChatColor.DARK_RED + "Guilds 插件未正確啟用");
+                    guildDye.setItemMeta(guildDyeMeta);
                 }
             }
 
-        } catch (Exception e) {
-            plugin.getLogger().severe("無法載入 Guilds 功能：" + e.getMessage());
-
-            guildFlag = new ItemStack(Material.BARRIER);
-            ItemMeta guildFlagMeta = guildFlag.getItemMeta();
-            if (guildFlagMeta != null) {
-                guildFlagMeta.setDisplayName(ChatColor.DARK_RED + "Guilds 插件未正確啟用");
-                guildFlag.setItemMeta(guildFlagMeta);
-            }
-
-            guildDye = new ItemStack(Material.BARRIER);
-            ItemMeta guildDyeMeta = guildDye.getItemMeta();
-            if (guildDyeMeta != null) {
-                guildDyeMeta.setDisplayName(ChatColor.DARK_RED + "Guilds 插件未正確啟用");
-                guildDye.setItemMeta(guildDyeMeta);
-            }
+            homesMenu.setItem(10, guildFlag);
+            homesMenu.setItem(19, guildDye);
         }
-
-        homesMenu.setItem(10, guildFlag);
-        homesMenu.setItem(19, guildDye);
-
-        // 家園顯示槽位（保持原樣）
-        int[] bedSlots = {12, 13, 14, 15, 16};
-        int[] dyeSlots = {21, 22, 23, 24, 25};
 
         int start = page * itemsPerPage;
         int end = Math.min(start + itemsPerPage, maxHomes);
@@ -334,8 +338,6 @@ public class HomesMenu {
             }
             homesMenu.setItem(slotDye, dye);
         }
-
-        // ======（移除舊的 slot 28 共享家園按鈕，不再放）======
 
         // 上一頁
         if (page > 0) {

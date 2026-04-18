@@ -31,7 +31,7 @@ public class SetHome implements CommandExecutor {
         }
         if (args.length != 1) {
             SoundUtils.playFail(plugin, p);
-            p.sendMessage(color("/sethome <HomeName>"));
+            p.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/sethome &7<&eHomeName&7>"));
             return true;
         }
 

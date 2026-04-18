@@ -18,7 +18,7 @@ public class Import implements ICommand {
     }
 
     @Override public String name() { return "import"; }
-    @Override public String usage() { return "/home import <Essentials|HuskHomes>"; }
+    @Override public String usage() { return "&f/home import &7<&eEssentials &7| &eHuskHomes&7>"; }
     @Override public String permission() { return null; }
     @Override public boolean playerOnly() { return false; }
 
@@ -28,7 +28,7 @@ public class Import implements ICommand {
 
         if (args.length < 1) {
             SoundUtils.playFail(plugin, (Player) sender);
-            sender.sendMessage(color(usage()));
+            sender.sendMessage(color(usageMessage()));
             return true;
         }
 
@@ -60,7 +60,7 @@ public class Import implements ICommand {
             }
         } else {
             SoundUtils.playFail(plugin, (Player) sender);
-            sender.sendMessage(color(usage()));
+            sender.sendMessage(color(usageMessage()));
         }
         return true;
     }

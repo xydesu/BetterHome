@@ -3,8 +3,7 @@ version: '${project.version}'
 author: Kevi_28576
 main: kevin.betterhome.BetterHome
 api-version: 1.13
-depend: [LuckPerms, Guilds]
-softdepend: [Essentials, PlaceholderAPI]
+softdepend: [Essentials, PlaceholderAPI, Guilds]
 
 commands:
   home:
@@ -35,9 +34,9 @@ commands:
     description: Remove a shared home from a player
     usage: /home unshare <homeName> <player>
     permission: betterhome.share
-  shareslist:
+  sharelist:
     description: View a list of your shared homes
-    usage: /home shareslist
+    usage: /home sharelist
     permission: betterhome.share
 
 permissions:
