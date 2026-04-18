@@ -153,7 +153,7 @@
 ## 從原始碼建置
 
 ```bash
-git clone https://github.com/xydesu/BetterHome.git
+git clone https://github.com/Kevin28576/BetterHome.git
 cd BetterHome
 mvn -B -DskipTests package
 # 輸出：target/BetterHome-<version>.jar
