@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 /**
  * Wraps an {@link ICommand} as a standalone {@link CommandExecutor} so that
  * short commands (e.g. {@code /share}, {@code /unshare}, {@code /sharelist})
@@ -36,7 +38,7 @@ public class ShortCommandExecutor implements CommandExecutor {
             return true;
         }
 
-        return delegate.execute(sender, args);
+        return delegate.execute(sender, args, command.getName().toLowerCase(Locale.ROOT));
     }
 
     private String color(String s) {

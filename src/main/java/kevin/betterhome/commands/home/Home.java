@@ -78,7 +78,7 @@ public class Home implements CommandExecutor, TabCompleter {
         }
         // 把子指令名稱吃掉再傳參
         String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
-        return sub.execute(sender, subArgs);
+        return sub.execute(sender, subArgs, label + " " + args[0].toLowerCase(Locale.ROOT));
     }
 
     private String color(String s) {

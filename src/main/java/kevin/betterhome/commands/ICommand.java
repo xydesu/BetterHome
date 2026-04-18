@@ -10,5 +10,7 @@ public interface ICommand {
     default String usageMessage() { return "&7[&bBetterHome&7] &cUsage: " + usage(); }
     boolean playerOnly();          // 是否只能玩家使用
     boolean execute(CommandSender sender, String[] args);
+    /** Execute with the invocation label (e.g. "home share" or "share"). Defaults to the no-label form. */
+    default boolean execute(CommandSender sender, String[] args, String label) { return execute(sender, args); }
     default List<String> tabComplete(CommandSender sender, String[] args) { return List.of(); }
 }

@@ -21,12 +21,20 @@ public class Share implements ICommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        return execute(sender, args, "home " + name());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String[] args, String label) {
         var config = plugin.getConfig();
         Player player = (Player) sender;
 
         if (args.length != 2) {
             SoundUtils.playFail(plugin, player);
-            player.sendMessage(color(usageMessage()));
+            String usageStr = label.equalsIgnoreCase(name())
+                    ? "&7[&bBetterHome&7] &cUsage: &f/share &7<&eHomeName&7> &7<&ePlayer&7>"
+                    : "&7[&bBetterHome&7] &cUsage: &f/home share &7<&eHomeName&7> &7<&ePlayer&7>";
+            player.sendMessage(color(usageStr));
             return true;
         }
 
