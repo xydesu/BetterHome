@@ -53,7 +53,7 @@ public class GuildsManager {
                 getGuildNameMethod = sampleGuild.getClass().getMethod("getName");
                 getGuildHomeMethod = sampleGuild.getClass().getMethod("getHome");
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             guildsApi = null;
             clearCache();
             plugin.getLogger().warning("Guilds detected but API initialization failed: " + e.getMessage());

@@ -20,7 +20,8 @@ public class AdminList {
 
     // 快取的使用者清單
     private static List<OfflinePlayer> cachedUsers = Collections.emptyList();
-    private static boolean cacheLoaded = false;
+    private static volatile boolean cacheLoaded = false;
+    private static volatile boolean cacheLoading = false;
 
     /**
      * 初始化方法，必須在 Plugin 啟動時呼叫一次
@@ -38,6 +39,7 @@ public class AdminList {
             throw new IllegalArgumentException("plugin 不能為 null");
         }
 
+        cacheLoading = true;
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 plugin.getLogger().info("[AdminList] 開始刷新玩家快取...");
@@ -64,6 +66,8 @@ public class AdminList {
             } catch (Exception e) {
                 plugin.getLogger().severe("[AdminList] 快取刷新發生錯誤:");
                 e.printStackTrace();
+            } finally {
+                cacheLoading = false;
             }
         });
     }
@@ -93,12 +97,14 @@ public class AdminList {
         if (!cacheLoaded) {
             Inventory loading = Bukkit.createInventory(null, 54, ChatColor.DARK_GRAY + "Loading...");
             player.openInventory(loading);
-            refreshCacheAsync(plugin, () -> {
-                if (!player.isOnline()) {
-                    return;
-                }
-                open(player, page);
-            });
+            if (!cacheLoading) {
+                refreshCacheAsync(plugin, () -> {
+                    if (!player.isOnline()) {
+                        return;
+                    }
+                    open(player, page);
+                });
+            }
             return;
         }
 
