@@ -3,7 +3,7 @@ package kevin.betterhome.commands;
 import kevin.betterhome.BetterHome;
 import kevin.betterhome.commands.home.Home;
 import kevin.betterhome.commands.home.sub.Share;
-import kevin.betterhome.commands.home.sub.SharesList;
+import kevin.betterhome.commands.home.sub.ShareList;
 import kevin.betterhome.commands.home.sub.Unshare;
 import kevin.betterhome.tabcompleters.HomeTabCompleter;
 import org.bukkit.Bukkit;

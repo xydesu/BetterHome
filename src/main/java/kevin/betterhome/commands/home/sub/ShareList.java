@@ -11,13 +11,13 @@ import org.bukkit.ChatColor;
 
 import java.util.*;
 
-public class SharesList implements ICommand {
+public class ShareList implements ICommand {
     private final BetterHome plugin;
-    public SharesList(BetterHome plugin) { this.plugin = plugin; }
+    public ShareList(BetterHome plugin) { this.plugin = plugin; }
 
-    @Override public String name() { return "shareslist"; }
+    @Override public String name() { return "sharelist"; }
     @Override public String permission() { return "betterhome.share"; }
-    @Override public String usage() { return "&f/home shareslist"; }
+    @Override public String usage() { return "&f/home sharelist"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override

@@ -67,7 +67,7 @@ No plugins are required. All integrations below are optional.
 | `/home delete <name>` | Delete a home | `betterhome.use` |
 | `/home share <name> <player>` | Share a home with a player | `betterhome.share` |
 | `/home unshare <name> <player>` | Remove a player's access to a shared home | `betterhome.share` |
-| `/home shareslist` | View your shared homes | `betterhome.share` |
+| `/home sharelist` | View your shared homes | `betterhome.share` |
 | `/home import <Essentials\|HuskHomes>` | Import homes from another plugin | `betterhome.import.*` |
 | `/home admin create <player> <name> [x y z]` | Create a home for another player | `betterhome.admin` |
 | `/home admin delete <player> <name>` | Delete a home owned by another player | `betterhome.admin` |

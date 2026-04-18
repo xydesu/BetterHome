@@ -101,7 +101,7 @@ public class HomeTabCompleter implements TabCompleter {
                 suggestions.addAll(List.of("create", "delete", "tp", "rename"));
 
                 // 共享相關
-                suggestions.addAll(List.of("share", "unshare", "shareslist"));
+                suggestions.addAll(List.of("share", "unshare", "sharelist"));
 
                 return unique(filterByPrefix(suggestions, args[0]));
             }
