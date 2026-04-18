@@ -11,27 +11,34 @@ import java.util.Locale;
 public class Admin implements ICommand {
     private final AdminCreate create;
     private final AdminDelete delete;
+    private final String rootCommandLabel;
 
     public Admin(BetterHome plugin) {
         this.create = new AdminCreate(plugin);
         this.delete = new AdminDelete(plugin);
+        this.rootCommandLabel = plugin.getConfig().getString("menu.open-command", "/home").replace("/", "");
     }
 
     @Override public String name() { return "admin"; }
     @Override public String permission() { return "betterhome.admin"; }
-    @Override public String usage() { return "&f/home admin &7<&ecreate|delete&7> &8..."; }
+    @Override public String usage() { return "&f/" + rootCommandLabel + " admin &7<&ecreate|delete&7> &8..."; }
     @Override public boolean playerOnly() { return false; }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        return execute(sender, args, rootCommandLabel + " " + name());
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String[] args, String label) {
         if (args.length == 0) {
-            sender.sendMessage(color(usageMessage()));
+            sender.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/" + label + " &7<&ecreate|delete&7> &8..."));
             return true;
         }
-        if ("create".equalsIgnoreCase(args[0])) return create.execute(sender, args);
-        if ("delete".equalsIgnoreCase(args[0])) return delete.execute(sender, args);
+        if ("create".equalsIgnoreCase(args[0])) return create.execute(sender, args, label + " " + args[0].toLowerCase(Locale.ROOT));
+        if ("delete".equalsIgnoreCase(args[0])) return delete.execute(sender, args, label + " " + args[0].toLowerCase(Locale.ROOT));
         sender.sendMessage(color("&7[&bBetterHome&7] &cUnknown admin subcommand: &e" + args[0]));
-        sender.sendMessage(color(usageMessage()));
+        sender.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/" + label + " &7<&ecreate|delete&7> &8..."));
         return true;
     }
 

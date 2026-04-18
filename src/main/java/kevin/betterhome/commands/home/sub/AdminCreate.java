@@ -26,11 +26,16 @@ public class AdminCreate implements ICommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        return execute(sender, args, "home admin create");
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String[] args, String label) {
         var config = plugin.getConfig();
 
         if (args.length != 4 && args.length != 6 || !"create".equalsIgnoreCase(args[0])) {
             if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
-            sender.sendMessage(color(usageMessage()));
+            sender.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/" + label + " &7<&ePlayer&7> &7<&eHomeName&7> &7[&ex y z&7]"));
             return true;
         }
 

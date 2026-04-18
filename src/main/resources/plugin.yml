@@ -37,7 +37,6 @@ commands:
   sharelist:
     description: View a list of your shared homes
     usage: /home sharelist
-    aliases: [shareslist]
     permission: betterhome.share
 
 permissions:

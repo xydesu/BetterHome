@@ -38,7 +38,7 @@ public class ShortCommandExecutor implements CommandExecutor {
             return true;
         }
 
-        return delegate.execute(sender, args, command.getName().toLowerCase(Locale.ROOT));
+        return delegate.execute(sender, args, label.toLowerCase(Locale.ROOT));
     }
 
     private String color(String s) {

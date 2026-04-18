@@ -21,11 +21,16 @@ public class AdminDelete implements ICommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        return execute(sender, args, "home admin delete");
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String[] args, String label) {
         var config = plugin.getConfig();
 
         if (args.length != 3 || !"delete".equalsIgnoreCase(args[0])) {
             if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
-            sender.sendMessage(color(usageMessage()));
+            sender.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/" + label + " &7<&ePlayer&7> &7<&eHomeName&7>"));
             return true;
         }
 
