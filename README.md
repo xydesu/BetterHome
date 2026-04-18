@@ -4,7 +4,7 @@ A feature-rich Minecraft home management plugin for Spigot/Paper servers. Manage
 
 [繁體中文說明文件](README.zh-TW.md)
 
-![Build](https://github.com/xydesu/BetterHome/actions/workflows/build.yml/badge.svg)
+![Build](https://github.com/Kevin28576/BetterHome/actions/workflows/build.yml/badge.svg)
 
 ---
 
