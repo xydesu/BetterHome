@@ -31,10 +31,7 @@ public class Share implements ICommand {
 
         if (args.length != 2) {
             SoundUtils.playFail(plugin, player);
-            String usageStr = label.equalsIgnoreCase(name())
-                    ? "&7[&bBetterHome&7] &cUsage: &f/share &7<&eHomeName&7> &7<&ePlayer&7>"
-                    : "&7[&bBetterHome&7] &cUsage: &f/home share &7<&eHomeName&7> &7<&ePlayer&7>";
-            player.sendMessage(color(usageStr));
+            player.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/" + label + " &7<&eHomeName&7> &7<&ePlayer&7>"));
             return true;
         }
 
