@@ -3,6 +3,7 @@ import kevin.betterhome.BetterHome;
 import kevin.betterhome.menus.holders.AdminMenu;
 import kevin.betterhome.menus.holders.PlayerMenu;
 import kevin.betterhome.menus.ui.*;
+import kevin.betterhome.integration.guilds.GuildsManager;
 import kevin.betterhome.utils.HomeUtils;
 import kevin.betterhome.utils.HomeUtils.PendingHomeData;
 import kevin.betterhome.utils.SharedHomeUtils;
@@ -362,9 +363,8 @@ public class MenuManager implements Listener {
             if ("teleport".equals(value)) {
                 player.closeInventory();
                 try {
-                    me.glaremasters.guilds.guild.Guild guild = kevin.betterhome.integration.guilds.GuildsManager.getGuild(player);
-                    if (guild != null && guild.getHome() != null) {
-                        Location guildHome = guild.getHome().getAsLocation();
+                    Location guildHome = GuildsManager.getGuildHomeLocation(player);
+                    if (guildHome != null) {
                         SoundUtils.playTpTeleport(plugin, player);
                         player.teleport(guildHome);
                         SoundUtils.playTpComplete(plugin, player);
@@ -1004,4 +1004,3 @@ public class MenuManager implements Listener {
         }
     }
 }
-

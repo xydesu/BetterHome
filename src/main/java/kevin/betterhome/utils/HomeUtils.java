@@ -2,11 +2,6 @@ package kevin.betterhome.utils;
 
 import com.earth2me.essentials.Essentials;
 import kevin.betterhome.BetterHome;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.node.Node;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.query.QueryOptions;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -14,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -55,44 +51,27 @@ public class HomeUtils {
     public static int getMaxHomesForPlayer(BetterHome plugin, Player player) {
         FileConfiguration config = plugin.getConfig();
         int defaultMaxHomes = config.getInt("default-max-homes", 3);
+        final String prefix = "betterhome.maxhomes.";
 
         try {
-            LuckPerms luckPerms = LuckPermsProvider.get();
-            User user = luckPerms.getUserManager().getUser(player.getUniqueId());
+            int max = defaultMaxHomes;
+            for (PermissionAttachmentInfo permissionInfo : player.getEffectivePermissions()) {
+                if (!permissionInfo.getValue()) continue;
+                String permission = permissionInfo.getPermission();
+                if (permission == null || !permission.startsWith(prefix)) continue;
 
-            if (user != null) {
-                int max = defaultMaxHomes;
-
-                for (Node node : user.resolveInheritedNodes(QueryOptions.defaultContextualOptions())) {
-                    String permission = node.getKey();
-
-                    if (permission.startsWith("betterhome.maxhomes.")) {
-
-                        String[] parts = permission.split("\\.");
-                        if (parts.length == 3) {
-                            try {
-                                int value = Integer.parseInt(parts[2]);
-
-                                if (node.getValue()) {
-                                    if (value > max) {
-                                        max = value;
-                                    }
-                                }
-
-                            } catch (NumberFormatException e) {
-                                plugin.getLogger().warning("[BetterHome] 無法解析數字: " + parts[2]);
-                            }
-                        } else {
-                            plugin.getLogger().warning("[BetterHome] 權限格式不正確: " + permission);
-                        }
+                String valuePart = permission.substring(prefix.length());
+                if (valuePart.isEmpty()) continue;
+                try {
+                    int value = Integer.parseInt(valuePart);
+                    if (value > max) {
+                        max = value;
                     }
+                } catch (NumberFormatException ignored) {
+                    plugin.logDebug("Ignored invalid max-homes permission: " + permission + ", error: " + ignored.getMessage());
                 }
-
-                return max;
-            } else {
-                plugin.getLogger().warning("[BetterHome] 找不到玩家 User 實例: " + player.getName());
             }
-
+            return max;
         } catch (Exception e) {
             plugin.getLogger().severe("無法讀取玩家最大家園權限: " + e.getMessage());
             e.printStackTrace();

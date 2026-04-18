@@ -32,7 +32,7 @@ public class Home implements CommandExecutor, TabCompleter {
         add(new Import(plugin));
         add(new Share(plugin));
         add(new Unshare(plugin));
-        add(new SharesList(plugin));
+        add(new ShareList(plugin));
         add(new AdminCreate(plugin));
         add(new AdminDelete(plugin));
     }
@@ -62,7 +62,10 @@ public class Home implements CommandExecutor, TabCompleter {
         // 分派子指令
         ICommand sub = subs.get(args[0].toLowerCase(Locale.ROOT));
         if (sub == null) {
-            sender.sendMessage(color("&eUsage: /" + baseName + " <" + String.join("|", subs.keySet()) + "> ..."));
+            sender.sendMessage(color("&7[&bBetterHome&7] &e/home &7sub-commands:"));
+            for (ICommand s : subs.values()) {
+                sender.sendMessage(color("  &8\u00bb " + s.usage()));
+            }
             return true;
         }
         if (sub.playerOnly() && !(sender instanceof Player)) {

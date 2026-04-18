@@ -16,7 +16,7 @@ public class AdminDelete implements ICommand {
 
     @Override public String name() { return "admin"; }
     @Override public String permission() { return "betterhome.admin"; }
-    @Override public String usage() { return "/home admin delete <Player> <HomeName>"; }
+    @Override public String usage() { return "&f/home admin delete &7<&ePlayer&7> &7<&eHomeName&7>"; }
     @Override public boolean playerOnly() { return false; }
 
     @Override
@@ -25,7 +25,7 @@ public class AdminDelete implements ICommand {
 
         if (args.length != 3 || !"delete".equalsIgnoreCase(args[0])) {
             SoundUtils.playFail(plugin, (Player) sender);
-            sender.sendMessage(color(usage()));
+            sender.sendMessage(color(usageMessage()));
             return true;
         }
 

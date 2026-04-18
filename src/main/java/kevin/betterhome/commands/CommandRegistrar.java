@@ -3,7 +3,7 @@ package kevin.betterhome.commands;
 import kevin.betterhome.BetterHome;
 import kevin.betterhome.commands.home.Home;
 import kevin.betterhome.commands.home.sub.Share;
-import kevin.betterhome.commands.home.sub.SharesList;
+import kevin.betterhome.commands.home.sub.ShareList;
 import kevin.betterhome.commands.home.sub.Unshare;
 import kevin.betterhome.tabcompleters.HomeTabCompleter;
 import org.bukkit.Bukkit;
@@ -18,6 +18,11 @@ public class CommandRegistrar {
         register(plugin, "homegui", new HomeGui(plugin), completer);
         register(plugin, "gohome", new GoHome(plugin), completer);
         register(plugin, "sethome", new SetHome(plugin), completer);
+
+        // Short-form aliases that forward directly to the ICommand implementations
+        register(plugin, "share",     new ShortCommandExecutor(plugin, new Share(plugin)),     completer);
+        register(plugin, "unshare",   new ShortCommandExecutor(plugin, new Unshare(plugin)),   completer);
+        register(plugin, "sharelist", new ShortCommandExecutor(plugin, new ShareList(plugin)), completer);
     }
 
     private static void register(BetterHome plugin, String cmdName, Object executor, HomeTabCompleter completer) {
