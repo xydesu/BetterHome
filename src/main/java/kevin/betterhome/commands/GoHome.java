@@ -8,8 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.*;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.*;
 
 public class GoHome implements CommandExecutor {
@@ -26,6 +28,26 @@ public class GoHome implements CommandExecutor {
         if (!p.hasPermission("betterhome.use")) {
             SoundUtils.playFail(plugin, p);
             p.sendMessage(color(config.getString("messages.no-permissions")));
+            return true;
+        }
+        if (args.length == 0) {
+            // If the player has exactly one home, teleport to it directly
+            File playerFile = new File(plugin.getDataFolder(), "data/" + p.getUniqueId() + ".yml");
+            List<String> homes = playerFile.exists()
+                    ? YamlConfiguration.loadConfiguration(playerFile).getStringList("homes")
+                    : Collections.emptyList();
+            if (homes.isEmpty()) {
+                SoundUtils.playFail(plugin, p);
+                p.sendMessage(color(config.getString("messages.not-established-home")));
+                return true;
+            }
+            if (homes.size() == 1) {
+                HomeUtils.teleportPlayerToHomeWithCooldown(plugin, p, homes.get(0));
+                return true;
+            }
+            // Multiple homes — require explicit name
+            SoundUtils.playFail(plugin, p);
+            p.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/gohome &7<&eHomeName &7| &eOwnerName:HomeName&7>"));
             return true;
         }
         if (args.length != 1) {
