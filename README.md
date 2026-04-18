@@ -1,6 +1,6 @@
 # BetterHome
 
-![Build](https://github.com/xydesu/BetterHome/actions/workflows/build.yml/badge.svg)
+![Build](https://github.com/Kevin28576/BetterHome/actions/workflows/build.yml/badge.svg)
 
 BetterHome is a Minecraft home-management plugin for Spigot/Paper servers.  
 It lets players create, manage, and share homes using commands or a GUI.
@@ -26,7 +26,7 @@ Current version: **1.7.2**
 
 ## Installation
 
-1. Download the jar from the [Releases page](https://github.com/xydesu/BetterHome/releases).
+1. Download the jar from the [Releases page](https://github.com/Kevin28576/BetterHome/releases).
 2. Put it in your server `plugins/` folder.
 3. Restart the server.
 4. Edit `plugins/BetterHome/config.yml` if needed.
@@ -56,8 +56,8 @@ mvn -B -DskipTests package
 
 ## Links
 
-- Repository: [xydesu/BetterHome](https://github.com/xydesu/BetterHome)
-- Issues: [Issue Tracker](https://github.com/xydesu/BetterHome/issues)
+- Repository: [Kevin28576/BetterHome](https://github.com/Kevin28576/BetterHome)
+- Issues: [Issue Tracker](https://github.com/Kevin28576/BetterHome/issues)
 
 ## License
 
