@@ -29,7 +29,7 @@ A feature-rich Minecraft home management plugin for Spigot/Paper servers. Manage
 | Requirement | Version |
 |---|---|
 | Java | 16+ |
-| Spigot / Paper | 1.13+ |
+| Spigot / Paper | 1.14+ |
 
 No plugins are required. All integrations below are optional.
 
