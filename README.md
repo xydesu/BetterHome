@@ -155,7 +155,7 @@ Key settings in `config.yml`:
 ## Building from Source
 
 ```bash
-git clone https://github.com/xydesu/BetterHome.git
+git clone https://github.com/Kevin28576/BetterHome.git
 cd BetterHome
 mvn -B -DskipTests package
 # Output: target/BetterHome-<version>.jar
