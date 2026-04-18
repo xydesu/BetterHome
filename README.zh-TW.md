@@ -2,7 +2,7 @@
 
 適用於 Spigot/Paper 伺服器的功能完整 Minecraft 家園管理插件。你可以透過直覺的 GUI 或指令管理家園、與其他玩家分享家園，並讓管理員統一維護——且不需要任何必裝依賴。
 
-![Build](https://github.com/xydesu/BetterHome/actions/workflows/build.yml/badge.svg)
+![Build](https://github.com/Kevin28576/BetterHome/actions/workflows/build.yml/badge.svg)
 
 ---
 
