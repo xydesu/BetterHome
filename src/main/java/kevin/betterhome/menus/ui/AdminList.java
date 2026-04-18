@@ -93,7 +93,12 @@ public class AdminList {
         if (!cacheLoaded) {
             Inventory loading = Bukkit.createInventory(null, 54, ChatColor.DARK_GRAY + "Loading...");
             player.openInventory(loading);
-            refreshCacheAsync(plugin, () -> open(player, page));
+            refreshCacheAsync(plugin, () -> {
+                if (!player.isOnline()) {
+                    return;
+                }
+                open(player, page);
+            });
             return;
         }
 
