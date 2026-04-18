@@ -30,7 +30,7 @@ public class GoHome implements CommandExecutor {
         }
         if (args.length != 1) {
             SoundUtils.playFail(plugin, p);
-            p.sendMessage(color("/gohome <HomeName|OwnerName:HomeName>"));
+            p.sendMessage(color("&7[&bBetterHome&7] &cUsage: &f/gohome &7<&eHomeName &7| &eOwnerName:HomeName&7>"));
             return true;
         }
 
@@ -44,7 +44,7 @@ public class GoHome implements CommandExecutor {
 
             if (ownerName.isEmpty() || homeName.isEmpty()) {
                 SoundUtils.playFail(plugin, p);
-                p.sendMessage("§cInvalid format. Use §f/gohome owner:home");
+                p.sendMessage(color("&7[&bBetterHome&7] &cInvalid format. Use &f/gohome owner:home"));
                 return true;
             }
 

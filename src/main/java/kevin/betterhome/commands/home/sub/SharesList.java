@@ -17,7 +17,7 @@ public class SharesList implements ICommand {
 
     @Override public String name() { return "shareslist"; }
     @Override public String permission() { return "betterhome.share"; }
-    @Override public String usage() { return "/home shareslist"; }
+    @Override public String usage() { return "&f/home shareslist"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override

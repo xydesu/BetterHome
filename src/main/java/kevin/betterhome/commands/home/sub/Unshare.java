@@ -16,7 +16,7 @@ public class Unshare implements ICommand {
 
     @Override public String name() { return "unshare"; }
     @Override public String permission() { return "betterhome.share"; }
-    @Override public String usage() { return "/home unshare <HomeName> <Player>"; }
+    @Override public String usage() { return "&f/home unshare &7<&eHomeName&7> &7<&ePlayer&7>"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override
@@ -26,7 +26,7 @@ public class Unshare implements ICommand {
 
         if (args.length != 2) {
             SoundUtils.playFail(plugin, player);
-            player.sendMessage(color(usage()));
+            player.sendMessage(color(usageMessage()));
             return true;
         }
 

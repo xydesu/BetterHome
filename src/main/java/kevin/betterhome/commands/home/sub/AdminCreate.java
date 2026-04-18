@@ -21,7 +21,7 @@ public class AdminCreate implements ICommand {
 
     @Override public String name() { return "admin"; }
     @Override public String permission() { return "betterhome.admin"; }
-    @Override public String usage() { return "/home admin create <Player> <HomeName> [x y z]"; }
+    @Override public String usage() { return "&f/home admin create &7<&ePlayer&7> &7<&eHomeName&7> &7[&ex y z&7]"; }
     @Override public boolean playerOnly() { return false; }
 
     @Override
@@ -30,7 +30,7 @@ public class AdminCreate implements ICommand {
 
         if (args.length != 4 && args.length != 6 || !"create".equalsIgnoreCase(args[0])) {
             SoundUtils.playFail(plugin, (Player) sender);
-            sender.sendMessage(color(usage()));
+            sender.sendMessage(color(usageMessage()));
             return true;
         }
 

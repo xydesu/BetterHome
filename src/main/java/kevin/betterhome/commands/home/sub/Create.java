@@ -21,7 +21,7 @@ public class Create implements ICommand {
 
     @Override public String name() { return "create"; }
     @Override public String permission() { return "betterhome.use"; }
-    @Override public String usage() { return "/home create <HomeName>"; }
+    @Override public String usage() { return "&f/home create &7<&eHomeName&7>"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override
@@ -31,7 +31,7 @@ public class Create implements ICommand {
 
         if (args.length != 1) {
             SoundUtils.playFail(plugin, player);
-            sender.sendMessage(color(usage()));
+            sender.sendMessage(color(usageMessage()));
             return true;
         }
 

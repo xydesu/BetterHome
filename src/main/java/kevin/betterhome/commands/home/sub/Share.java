@@ -16,7 +16,7 @@ public class Share implements ICommand {
 
     @Override public String name() { return "share"; }
     @Override public String permission() { return "betterhome.share"; }
-    @Override public String usage() { return "/home share <HomeName> <Player>"; }
+    @Override public String usage() { return "&f/home share &7<&eHomeName&7> &7<&ePlayer&7>"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override
@@ -26,7 +26,7 @@ public class Share implements ICommand {
 
         if (args.length != 2) {
             SoundUtils.playFail(plugin, player);
-            player.sendMessage(color(usage()));
+            player.sendMessage(color(usageMessage()));
             return true;
         }
 

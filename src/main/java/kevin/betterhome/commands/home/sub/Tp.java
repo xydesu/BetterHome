@@ -20,7 +20,7 @@ public class Tp implements ICommand {
 
     @Override public String name() { return "tp"; }
     @Override public String permission() { return "betterhome.use"; }
-    @Override public String usage() { return "/home tp <HomeName|OwnerName:HomeName>"; }
+    @Override public String usage() { return "&f/home tp &7<&eHomeName &7| &eOwnerName:HomeName&7>"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override
@@ -30,7 +30,7 @@ public class Tp implements ICommand {
 
         if (args.length != 1) {
             SoundUtils.playFail(plugin, player);
-            player.sendMessage(color(usage()));
+            player.sendMessage(color(usageMessage()));
             return true;
         }
 
@@ -43,7 +43,7 @@ public class Tp implements ICommand {
             String homeName  = parts.length > 1 ? parts[1].trim() : "";
 
             if (ownerName.isEmpty() || homeName.isEmpty()) {
-                player.sendMessage("§cInvalid format. Use §f/home tp owner:home");
+                player.sendMessage(color("&7[&bBetterHome&7] &cInvalid format. Use &f/home tp owner:home"));
                 return true;
             }
 
