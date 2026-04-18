@@ -2,6 +2,8 @@
 
 A feature-rich Minecraft home management plugin for Spigot/Paper servers. Manage homes through an intuitive GUI or commands, share homes with other players, and let admins oversee everything — all with no required dependencies.
 
+[繁體中文說明文件](README.zh-TW.md)
+
 ![Build](https://github.com/xydesu/BetterHome/actions/workflows/build.yml/badge.svg)
 
 ---
@@ -27,7 +29,7 @@ A feature-rich Minecraft home management plugin for Spigot/Paper servers. Manage
 | Requirement | Version |
 |---|---|
 | Java | 16+ |
-| Spigot / Paper | 1.13+ |
+| Spigot / Paper | 1.14+ |
 
 No plugins are required. All integrations below are optional.
 
