@@ -29,14 +29,14 @@ public class AdminCreate implements ICommand {
         var config = plugin.getConfig();
 
         if (args.length != 4 && args.length != 6 || !"create".equalsIgnoreCase(args[0])) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(usageMessage()));
             return true;
         }
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
         if (target == null || !target.hasPlayedBefore()) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(config.getString("messages.player-not-found")));
             return true;
         }
@@ -46,7 +46,7 @@ public class AdminCreate implements ICommand {
         File playerFile = new File(dataFolder, target.getUniqueId() + ".yml");
         YamlConfiguration playerConfig = YamlConfiguration.loadConfiguration(playerFile);
         if (playerConfig.contains(homeName)) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(config.getString("messages.home-exists")));
             return true;
         }
@@ -59,7 +59,7 @@ public class AdminCreate implements ICommand {
                 y = Double.parseDouble(args[4]);
                 z = Double.parseDouble(args[5]);
             } catch (NumberFormatException e) {
-                SoundUtils.playError(plugin, (Player) sender);
+                if (sender instanceof Player p) SoundUtils.playError(plugin, p);
                 sender.sendMessage(color(config.getString("messages.invalid-coordinates")));
                 return true;
             }
@@ -87,12 +87,12 @@ public class AdminCreate implements ICommand {
 
         try {
             playerConfig.save(playerFile);
-            SoundUtils.playSuccess(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playSuccess(plugin, p);
             sender.sendMessage(color(config.getString("messages.home-established-to-other"))
                     .replace("%player%", target.getName()));
         } catch (IOException e) {
             e.printStackTrace();
-            SoundUtils.playError(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playError(plugin, p);
             sender.sendMessage(color(config.getString("messages.saving-error")));
         }
         return true;

@@ -27,7 +27,7 @@ public class Import implements ICommand {
         var config = plugin.getConfig();
 
         if (args.length < 1) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(usageMessage()));
             return true;
         }
@@ -37,7 +37,7 @@ public class Import implements ICommand {
             // Essentials 匯入
             if (sender instanceof Player p) {
                 if (!p.hasPermission("betterhome.import.essentials")) {
-                    SoundUtils.playFail(plugin, (Player) sender);
+                    SoundUtils.playFail(plugin, p);
                     p.sendMessage(color(config.getString("messages.import-no-permission")));
                     return true;
                 }
@@ -50,7 +50,7 @@ public class Import implements ICommand {
             String dbPath = "HuskHomes/HuskHomesData.db";
             if (sender instanceof Player p) {
                 if (!p.hasPermission("betterhome.import.huskhomes")) {
-                    SoundUtils.playFail(plugin, (Player) sender);
+                    SoundUtils.playFail(plugin, p);
                     p.sendMessage(color(config.getString("messages.import-no-permission")));
                     return true;
                 }
@@ -59,7 +59,7 @@ public class Import implements ICommand {
                 importer.importHomesFromHuskHomesForAllPlayers(sender, dbPath);
             }
         } else {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(usageMessage()));
         }
         return true;

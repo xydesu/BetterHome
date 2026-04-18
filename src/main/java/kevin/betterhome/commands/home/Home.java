@@ -33,8 +33,7 @@ public class Home implements CommandExecutor, TabCompleter {
         add(new Share(plugin));
         add(new Unshare(plugin));
         add(new ShareList(plugin));
-        add(new AdminCreate(plugin));
-        add(new AdminDelete(plugin));
+        add(new Admin(plugin));
     }
 
     private void add(ICommand cmd) { subs.put(cmd.name().toLowerCase(Locale.ROOT), cmd); }
@@ -73,7 +72,7 @@ public class Home implements CommandExecutor, TabCompleter {
             return true;
         }
         if (sub.permission() != null && !sender.hasPermission(sub.permission())) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(config.getString("messages.no-permissions")));
             return true;
         }

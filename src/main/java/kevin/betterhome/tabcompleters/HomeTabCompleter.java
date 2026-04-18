@@ -85,6 +85,49 @@ public class HomeTabCompleter implements TabCompleter {
         }
 
         // =========================
+        // /share <home> <player>
+        // =========================
+        if (equalsAnyIgnoreCase(cmdName, aliasName, "share")) {
+            if (!(sender instanceof Player p) || !p.hasPermission("betterhome.share")) return List.of();
+            if (args.length == 1) {
+                suggestions.addAll(plugin.getHomesFor(p));
+                return unique(filterByPrefix(suggestions, args[0]));
+            }
+            if (args.length == 2) {
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    if (!online.getUniqueId().equals(p.getUniqueId())) suggestions.add(online.getName());
+                }
+                return unique(filterByPrefix(suggestions, args[1]));
+            }
+            return List.of();
+        }
+
+        // =========================
+        // /unshare <home> <player>
+        // =========================
+        if (equalsAnyIgnoreCase(cmdName, aliasName, "unshare")) {
+            if (!(sender instanceof Player p) || !p.hasPermission("betterhome.share")) return List.of();
+            if (args.length == 1) {
+                suggestions.addAll(plugin.getHomesFor(p));
+                return unique(filterByPrefix(suggestions, args[0]));
+            }
+            if (args.length == 2) {
+                List<String> sharedNames = SharedHomeUtils
+                        .getSharedPlayerNamesForHome(plugin, p.getUniqueId(), args[0]);
+                suggestions.addAll(sharedNames);
+                return unique(filterByPrefix(suggestions, args[1]));
+            }
+            return List.of();
+        }
+
+        // =========================
+        // /sharelist
+        // =========================
+        if (equalsAnyIgnoreCase(cmdName, aliasName, "sharelist")) {
+            return List.of();
+        }
+
+        // =========================
         // /home 主指令（可自訂名稱）
         // =========================
         if (equalsAnyIgnoreCase(cmdName, aliasName, configuredCommand)) {

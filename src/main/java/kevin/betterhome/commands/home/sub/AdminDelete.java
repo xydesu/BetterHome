@@ -24,14 +24,14 @@ public class AdminDelete implements ICommand {
         var config = plugin.getConfig();
 
         if (args.length != 3 || !"delete".equalsIgnoreCase(args[0])) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(usageMessage()));
             return true;
         }
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
         if (target == null || (!target.hasPlayedBefore() && !target.isOnline())) {
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(config.getString("messages.player-not-found"))
                     .replace("%player%", args[1]));
             return true;
@@ -44,7 +44,7 @@ public class AdminDelete implements ICommand {
 
         if (!ok) {
             // 失敗時補一條明確訊息
-            SoundUtils.playFail(plugin, (Player) sender);
+            if (sender instanceof Player p) SoundUtils.playFail(plugin, p);
             sender.sendMessage(color(config.getString("messages.home-not-found")
                     .replace("%home%", homeName)));
         }

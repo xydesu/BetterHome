@@ -16,7 +16,7 @@ public class Unshare implements ICommand {
 
     @Override public String name() { return "unshare"; }
     @Override public String permission() { return "betterhome.share"; }
-    @Override public String usage() { return "&f/home unshare &7<&eHomeName&7> &7<&ePlayer&7>"; }
+    @Override public String usage() { return "&f/home unshare &7<&eHomeName&7> &7<&ePlayer&7> &8| &f/unshare &7<&eHomeName&7> &7<&ePlayer&7>"; }
     @Override public boolean playerOnly() { return true; }
 
     @Override
